@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import json, streamlit as st
+import json
 from google.oauth2 import service_account
 from google.cloud import bigquery
 import streamlit as st
@@ -56,7 +56,10 @@ calculate = st.button("Calculate")
 # --- BigQuery Client ---
 @st.cache_resource
 def get_bq_client():
-    return bigquery.Client()
+    service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_KEY"])
+    credentials = service_account.Credentials.from_service_account_info(service_account_info)
+    project_id = credentials.project_id  # or manually: "ultra-concord-475707-a7"
+    return bigquery.Client(credentials=credentials, project=project_id)
 
 client = get_bq_client()
 
