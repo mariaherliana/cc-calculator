@@ -58,10 +58,11 @@ calculate = st.button("Calculate")
 def get_bq_client():
     service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_KEY"])
     credentials = service_account.Credentials.from_service_account_info(service_account_info)
-    project_id = credentials.project_id  # or manually: "ultra-concord-475707-a7"
+    project_id = credentials.project_id  # or explicitly: "ultra-concord-475707-a7"
     return bigquery.Client(credentials=credentials, project=project_id)
 
 client = get_bq_client()
+st.write("✅ Connected to:", client.project)
 
 # --- Main Action ---
 if calculate:
