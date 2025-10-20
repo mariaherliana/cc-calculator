@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
+import json, streamlit as st
+from google.oauth2 import service_account
 from google.cloud import bigquery
-import os, json
 
-if "SERVICE_ACCOUNT_KEY" in os.environ:
-    key_path = "/tmp/service_account.json"
-    with open(key_path, "w") as f:
-        f.write(os.environ["SERVICE_ACCOUNT_KEY"])
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
+service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_KEY"])
+credentials = service_account.Credentials.from_service_account_info(service_account_info)
+client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
 # Optional: import your calculation modules
 # from src.CallDetail import CallDetail
