@@ -56,13 +56,25 @@ calculate = st.button("Calculate")
 # --- BigQuery Client ---
 @st.cache_resource
 def get_bq_client():
-    service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_KEY"])
-    credentials = service_account.Credentials.from_service_account_info(service_account_info)
-    project_id = credentials.project_id  # or explicitly: "ultra-concord-475707-a7"
+    creds_dict = {
+        "type": st.secrets["GCP_TYPE"],
+        "project_id": st.secrets["GCP_PROJECT_ID"],
+        "private_key_id": st.secrets["GCP_PRIVATE_KEY_ID"],
+        "private_key": st.secrets["GCP_PRIVATE_KEY"],
+        "client_email": st.secrets["GCP_CLIENT_EMAIL"],
+        "client_id": st.secrets["GCP_CLIENT_ID"],
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": f"https://www.googleapis.com/robot/v1/metadata/x509/{st.secrets['GCP_CLIENT_EMAIL']}"
+    }
+
+    credentials = service_account.Credentials.from_service_account_info(creds_dict)
+    project_id = st.secrets["GCP_PROJECT_ID"]
     return bigquery.Client(credentials=credentials, project=project_id)
 
 client = get_bq_client()
-st.write("✅ Connected to:", client.project)
+st.write("✅ Connected to BigQuery project:", client.project)
 
 # --- Main Action ---
 if calculate:
