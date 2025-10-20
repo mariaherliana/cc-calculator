@@ -118,7 +118,7 @@ if calculate:
           call_from,
           number_type,
           call_id
-        FROM `ultra-concord-475707-a7.CallCharge_local.v_daily_call_charges_jakarta_joined`
+        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
         WHERE pbx_region = 'jkt'
     """
 
