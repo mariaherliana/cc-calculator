@@ -87,9 +87,10 @@ if calculate:
     check_sql = """
         SELECT 1
         FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
-        WHERE tenant_name = @tenant_name
+        WHERE name = @tenant_name
         LIMIT 1
     """
+
     job_cfg = bigquery.QueryJobConfig(
         query_parameters=[
             bigquery.ScalarQueryParameter("tenant_name", "STRING", tenant_name)
@@ -106,7 +107,7 @@ if calculate:
     query = """
         SELECT
           tenant_id,
-          tenant_name,
+          name AS tenant_name,
           call_type,
           duration_of_call_sec,
           duration_of_call_sec_str,
