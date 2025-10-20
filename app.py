@@ -6,7 +6,7 @@ from google.cloud import bigquery
 import streamlit as st
 
 # Load credentials from Streamlit secrets
-service_account_info = json.loads(st.secrets["GCP_PRIVATE_KEY_ID"])
+service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_KEY"])
 credentials = service_account.Credentials.from_service_account_info(service_account_info)
 
 # ✅ Explicitly specify the project
