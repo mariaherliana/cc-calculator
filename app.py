@@ -84,26 +84,29 @@ if calculate:
 
     st.info("Checking tenant...")
 
+    # Parameterized tenant check
     check_sql = """
         SELECT 1
         FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
         WHERE name = @tenant_name
         LIMIT 1
     """
-
-    job_cfg = bigquery.QueryJobConfig(
-        query_parameters=[
-            bigquery.ScalarQueryParameter("tenant_name", "STRING", tenant_name)
-        ]
-    )
-    exists = client.query(check_sql, job_config=job_cfg).to_dataframe()
+    tenant_params = [
+        bigquery.ScalarQueryParameter("tenant_name", "STRING", tenant_name)
+    ]
+    exists = client.query(
+        check_sql,
+        job_config=bigquery.QueryJobConfig(query_parameters=tenant_params)
+    ).to_dataframe()
     
     if exists.empty:
         st.error(f"Tenant '{tenant_name}' not found. Please check the name.")
         st.stop()
     
     st.success("Tenant verified. Fetching call data...")
-    
+
+    # Parameterized call data query
+    region = "jkt"  # you can later make this dynamic if needed
     query = """
         SELECT
           tenant_id,
@@ -120,10 +123,14 @@ if calculate:
           number_type,
           call_id
         FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
-        WHERE pbx_region = 'jkt'
+        WHERE pbx_region = @region
     """
+    query_params = [
+        bigquery.ScalarQueryParameter("region", "STRING", region)
+    ]
+    job_cfg = bigquery.QueryJobConfig(query_parameters=query_params)
 
-    df = client.query(query, job_config=bigquery.QueryJobConfig(query_parameters=params)).to_dataframe()
+    df = client.query(query, job_config=job_cfg).to_dataframe()
 
     if df.empty:
         st.warning("No call data found for that period.")
