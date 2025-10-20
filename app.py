@@ -1,8 +1,13 @@
-# streamlit_app.py
-
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery
+import os, json
+
+if "SERVICE_ACCOUNT_KEY" in os.environ:
+    key_path = "/tmp/service_account.json"
+    with open(key_path, "w") as f:
+        f.write(os.environ["SERVICE_ACCOUNT_KEY"])
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
 
 # Optional: import your calculation modules
 # from src.CallDetail import CallDetail
