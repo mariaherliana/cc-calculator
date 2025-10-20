@@ -86,7 +86,7 @@ if calculate:
 
     check_sql = """
         SELECT 1
-        FROM `revcomm-data-warehouse.CallCharge_local.v_daily_call_charges_jakarta_joined`
+        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined`
         WHERE tenant_name = @tenant_name
         LIMIT 1
     """
@@ -104,16 +104,23 @@ if calculate:
     st.success("Tenant verified. Fetching call data...")
 
     query = """
-        SELECT *
-        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined`
-        WHERE tenant_name = @tenant_name
-          AND DATE(dial_starts_at) BETWEEN @start AND @end
+        SELECT
+          tenant_id,
+          tenant_name,
+          call_type,
+          duration_of_call_sec,
+          duration_of_call_sec_str,
+          all_duration_of_call_sec_str,
+          dial_starts_at,
+          dial_answered_at,
+          dial_ends_at,
+          call_to,
+          call_from,
+          number_type,
+          call_id
+        FROM `ultra-concord-475707-a7.CallCharge_local.v_daily_call_charges_jakarta_joined`
+        WHERE pbx_region = 'jkt'
     """
-    params = [
-        bigquery.ScalarQueryParameter("tenant_name", "STRING", tenant_name),
-        bigquery.ScalarQueryParameter("start", "DATE", start_date),
-        bigquery.ScalarQueryParameter("end", "DATE", end_date),
-    ]
 
     df = client.query(query, job_config=bigquery.QueryJobConfig(query_parameters=params)).to_dataframe()
 
