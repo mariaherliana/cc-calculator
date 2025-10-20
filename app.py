@@ -89,7 +89,7 @@ if calculate:
 
     query = """
         SELECT *
-        FROM `revcomm-data-warehouse.CallCharge_local.v_daily_call_charges_jakarta_joined`
+        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined`
         WHERE tenant_name = @tenant_name
           AND DATE(dial_starts_at) BETWEEN @start AND @end
     """
