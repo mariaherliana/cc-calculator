@@ -13,7 +13,7 @@ st.set_page_config(page_title="Call Charge Dashboard", layout="wide")
 st.title("📞 Call Charge Dashboard (Jakarta Region)")
 
 # --- Inputs ---
-tenant_name = st.text_input("Tenant Name (e.g., akasa-id)").strip()
+tenant_name = st.text_input("Tenant Name (e.g., tenant-id)").strip()
 col1, col2 = st.columns(2)
 with col1:
     start_date = st.date_input("Start Date")
