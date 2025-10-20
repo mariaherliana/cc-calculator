@@ -123,7 +123,7 @@ if calculate:
           number_type,
           call_id
         FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
-        WHERE pbx_region = @region
+        WHERE pbx_region = jkt
     """
     query_params = [
         bigquery.ScalarQueryParameter("region", "STRING", region)
