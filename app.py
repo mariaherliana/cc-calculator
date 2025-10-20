@@ -86,7 +86,7 @@ if calculate:
 
     check_sql = """
         SELECT 1
-        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined`
+        FROM `ultra-concord-475707-a7.CallCharge_local_v_daily_call_charges_jakarta_joined.CallCharge_local`
         WHERE tenant_name = @tenant_name
         LIMIT 1
     """
@@ -96,13 +96,13 @@ if calculate:
         ]
     )
     exists = client.query(check_sql, job_config=job_cfg).to_dataframe()
-
+    
     if exists.empty:
         st.error(f"Tenant '{tenant_name}' not found. Please check the name.")
         st.stop()
-
+    
     st.success("Tenant verified. Fetching call data...")
-
+    
     query = """
         SELECT
           tenant_id,
