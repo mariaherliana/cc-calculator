@@ -5,6 +5,7 @@ from google.oauth2 import service_account
 from google.cloud import bigquery
 import streamlit as st
 
+# Build credentials dict from Streamlit secrets
 creds_dict = {
     "type": st.secrets["GCP_TYPE"],
     "project_id": st.secrets["GCP_PROJECT_ID"],
@@ -19,7 +20,12 @@ creds_dict = {
 }
 
 credentials = service_account.Credentials.from_service_account_info(creds_dict)
-client = bigquery.Client(credentials=credentials, project=st.secrets["GCP_PROJECT_ID"])
+
+# ✅ Explicitly tell BigQuery which project to use
+client = bigquery.Client(
+    credentials=credentials,
+    project=st.secrets["GCP_PROJECT_ID"]
+)
 
 # Optional: import your calculation modules
 # from src.CallDetail import CallDetail
