@@ -109,7 +109,7 @@ if calculate:
     region = "jkt"  # you can later make this dynamic if needed
     query = """
         SELECT
-          tenant_id,
+          isviz_tenant_id AS tenant_id,
           name AS tenant_name,
           call_type,
           duration_of_call_sec,
